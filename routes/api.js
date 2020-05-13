@@ -103,14 +103,29 @@ module.exports = function (app) {
   
   
     .get(function (req, res){
-      var bookid = req.params.id;
+      var bookid = req.params._id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
     
     .post(function(req, res){
-      var bookid = req.params.id;
+      var bookid = req.params._id;
       var comment = req.body.comment;
+    //
     
+         MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+          var db = db.db("test");
+          var collection = db.collection("books");
+
+          collection.findOneAndUpdate(
+            { _id: new ObjectId(bookid) },
+                    { $push: comment},
+                      function(err, doc) {
+              !err
+                ? res.send({title:req.body.title, _id:req.body._id, commments:req.body.comment})
+                : res.send("could not update " + bookid + " " + err);
+            }
+          );
+        });
     
     
       //json res format same as .get

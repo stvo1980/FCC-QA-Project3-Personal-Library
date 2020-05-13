@@ -24,11 +24,15 @@ module.exports = function (app) {
    MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
         var db = db.db("test");
         var collection = db.collection("books");
+     let result=[];
         collection.find(searchQuery).toArray(function(err, docs) {
+          docs.forEach(item=>{
+  result.push({_id:item._id, title:item.title, countcomment:item.comment.length})
+
+})
           
-          
-          res.json(docs);
-   console.log("docs", docs);
+          res.json(result);
+  // console.log("docs", docs);
         });
      
 
@@ -45,14 +49,7 @@ module.exports = function (app) {
       var book = {
         title: req.body.title,
         comment:[]
-    //    issue_text: req.body.issue_text,
-    //    created_on: new Date(),
-    //    updated_on: new Date(),
-    //    created_by: req.body.created_by,
-  //      assigned_to: req.body.assigned_to || "",
-       
-    //    open: true,
-    //    status_text: req.body.status_text || ""
+    
       };
       
         MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {

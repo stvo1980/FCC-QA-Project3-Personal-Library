@@ -31,7 +31,7 @@ module.exports = function(app) {
             result.push({
               _id: item._id,
               title: item.title,
-              countcomment: item.comments.length
+              commentcount: item.comments.length
             });
           });
 

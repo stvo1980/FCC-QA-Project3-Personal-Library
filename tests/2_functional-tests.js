@@ -14,7 +14,7 @@ var server = require('../server');
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
-
+ var idTest;
   /*
   * ----[EXAMPLE TEST]----
   * Each test should completely test the response of the API end-point including response status code!
@@ -28,6 +28,7 @@ suite('Functional Tests', function() {
         assert.property(res.body[0], 'commentcount', 'Books in array should contain commentcount');
         assert.property(res.body[0], 'title', 'Books in array should contain title');
         assert.property(res.body[0], '_id', 'Books in array should contain _id');
+                   
         done();
       });
   });
@@ -41,6 +42,28 @@ suite('Functional Tests', function() {
     suite('POST /api/books with title => create book object/expect book object', function() {
       
       test('Test POST /api/books with title', function(done) {
+        
+        chai.request(server)
+      .post('/api/books')
+        .send({
+          title: "Title"
+          
+        })
+      .end(function(err, res){
+        assert.equal(res.status, 200);
+        assert.isArray(res.body, 'response should be an array');
+        assert.property(res.body[0], 'commentcount', 'Books in array should contain commentcount');
+        assert.property(res.body[0], 'title', 'Books in array should contain title');
+        assert.property(res.body[0], '_id', 'Books in array should contain _id');
+        idTest = res.body._id;
+          assert.equal(res.type, "application/json", "Response should be json");
+          assert.equal(res.body.title, "Title", "");
+          assert.equal(res.body.commentcount, 0, "");
+        done();
+      });
+        
+        
+        
         //done();
       });
       

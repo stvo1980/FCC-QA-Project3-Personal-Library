@@ -91,6 +91,9 @@ module.exports = function(app) {
         var collection = db.collection("books");
         let result = [];
         collection.find( {_id: new ObjectId(bookid)} ).toArray(function(err, docs) {
+       if(err) res.send("no books")
+          
+          
           docs.forEach(item => {
             result.push({
               _id: item._id,
@@ -98,12 +101,14 @@ module.exports = function(app) {
               comments: item.comments
             });
           });
-console.log("result.length",result.length)
-          if(result.length < 1) {
+// console.log("result.length",result.length)
+          if(result.length == 0) {
             res.send('no book exists');
           } else {
             res.json(result);
          }
+          
+        
           
           
     //      res.json(result);

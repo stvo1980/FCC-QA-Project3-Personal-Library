@@ -121,7 +121,7 @@ suite("Functional Tests", function() {
     suite("GET /api/books/[id] => book object with [id]", function() {
       test("Test GET /api/books/[id] with id not in db", function(done) {
          chai.request(server)
-          .get('/api/books/5ebc41efb19e0b2efc77faea')
+          .get('/api/books/5ebc41efb19e0b2efc77fa5a')
           .end(function(err, res){
             assert.equal(res.status, 200);
             assert.equal(res.text, 'no book exists');
@@ -147,13 +147,13 @@ suite("Functional Tests", function() {
         
        chai
       .request(server)
-      .get("/api/books"+idTest)
+      .get("/api/books/5ebc41efb19e0b2efc77faea")
       .end(function(err, res) {
         assert.equal(res.status, 200);
-        assert.isArray(res.body, "response should be an array");
+//        assert.isArray(res.body, "response should be an array");
         assert.property(
           res.body[0],
-          "commentcount",
+          "comments",
           "Books in array should contain commentcount"
         );
         assert.property(

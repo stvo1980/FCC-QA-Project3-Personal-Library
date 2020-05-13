@@ -98,8 +98,15 @@ module.exports = function(app) {
               comments: item.comments
             });
           });
-
-          res.json(result);
+console.log("result.length",result.length)
+          if(result.length === 1) {
+            res.send('no book exists');
+          } else {
+            res.json(result[0]);
+          }
+          
+          
+    //      res.json(result);
           // console.log("docs", docs);
         });
       });

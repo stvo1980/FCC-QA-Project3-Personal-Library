@@ -38,7 +38,7 @@ module.exports = function (app) {
     
       var book = {
         title: req.body.title,
-        comment:req.body.comment
+        comment:[]
     //    issue_text: req.body.issue_text,
     //    created_on: new Date(),
     //    updated_on: new Date(),
@@ -58,7 +58,7 @@ module.exports = function (app) {
             res.json({
               _id: book._id,
               title: book.title,
-              comment:book.comment
+  //            comment:book.comment
               
             });
             console.log("DB updated");

@@ -84,6 +84,29 @@ module.exports = function(app) {
 
     .get(function(req, res) {
       var bookid = req.params.id;
+    
+    var searchQuery = req.query;
+      MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+        var db = db.db("test");
+        var collection = db.collection("books");
+        let result = [];
+        collection.find( {_id: new ObjectId(bookid)} ).toArray(function(err, docs) {
+          docs.forEach(item => {
+            result.push({
+              _id: item._id,
+              title: item.title,
+              comments: item.comments
+            });
+          });
+
+          res.json(result);
+          // console.log("docs", docs);
+        });
+      });
+    
+    
+    
+    
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
 

@@ -17,6 +17,9 @@ const MONGODB_CONNECTION_STRING = process.env.DB;
 module.exports = function (app) {
 
   app.route('/api/books')
+
+  
+  
     .get(function (req, res){
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
@@ -42,7 +45,7 @@ module.exports = function (app) {
   
   
   })
-    
+
     .post(function (req, res){
       var title = req.body.title;
     
@@ -74,11 +77,31 @@ module.exports = function (app) {
     
     .delete(function(req, res){
       //if successful response will be 'complete delete successful'
-    });
+         MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+          var db = db.db("test");
+          var collection = db.collection("books");
+          collection.deleteMany({}, function(
+            err,
+            doc
+          ) {
+            !err
+              ? res.send("complete delete successful")
+              : res.send("could not delete  " + err);
+          });
+        });
+ 
+  
+  
+  
+  
+  });
 
 
 
   app.route('/api/books/:id')
+
+  
+  
     .get(function (req, res){
       var bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
@@ -87,6 +110,9 @@ module.exports = function (app) {
     .post(function(req, res){
       var bookid = req.params.id;
       var comment = req.body.comment;
+    
+    
+    
       //json res format same as .get
     })
     

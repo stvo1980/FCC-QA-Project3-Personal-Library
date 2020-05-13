@@ -20,7 +20,18 @@ module.exports = function (app) {
     .get(function (req, res){
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
-    })
+    var searchQuery = req.query;
+   MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+        var db = db.db("test");
+        var collection = db.collection("books");
+        collection.find(searchQuery).toArray(function(err, docs) {
+          res.json(docs);
+        });
+      });
+  
+  
+  
+  })
     
     .post(function (req, res){
       var title = req.body.title;

@@ -103,29 +103,30 @@ module.exports = function (app) {
   
   
     .get(function (req, res){
-      var bookid = req.params._id;
+      var bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
     })
     
     .post(function(req, res){
-      var bookid = req.params._id;
+      var bookid = req.params.id;
       var comment = req.body.comment;
     //
-    
-         MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
-          var db = db.db("test");
-          var collection = db.collection("books");
-
-          collection.findOneAndUpdate(
-            { _id: new ObjectId(bookid) },
-                    { $push: comment},
-                      function(err, doc) {
-              !err
-                ? res.send({title:req.body.title, _id:req.body._id, commments:req.body.comment})
-                : res.send("could not update " + bookid + " " + err);
-            }
-          );
-        });
+       MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+        expect(err, 'database error').to.not.exist;
+         var db = db.db("test");
+        var collection = db.collection('books');
+         
+        collection.findAndModify(
+          {_id: new ObjectId(bookid)},
+          {},
+          {$push: { comments: comment }},
+          {new: true, upsert: false},
+          function(err, result){
+            expect(err, 'database findAndModify error').to.not.exist;
+            res.json(result.value);
+          });
+      });
+       
     
     
       //json res format same as .get

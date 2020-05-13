@@ -140,6 +140,26 @@ module.exports = function(app) {
 
     .delete(function(req, res) {
       var bookid = req.params.id;
+    //
+    
+    MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+          var db = db.db("test");
+          var collection = db.collection("books");
+          collection.findOneAndDelete({ _id: new ObjectId(bookid) }, function(
+            err,
+            doc
+          ) {
+            !err
+              ? res.send("delete successful")
+              : res.send("could not delete " + err);
+          });
+        });
+    
+    
+    
+    
+    
+    
       //if successful response will be 'delete successful'
     });
 };

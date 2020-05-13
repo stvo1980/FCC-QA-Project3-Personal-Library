@@ -25,6 +25,33 @@ module.exports = function (app) {
     .post(function (req, res){
       var title = req.body.title;
     
+      var book = {
+        title: req.body.title,
+    //    issue_text: req.body.issue_text,
+    //    created_on: new Date(),
+    //    updated_on: new Date(),
+    //    created_by: req.body.created_by,
+  //      assigned_to: req.body.assigned_to || "",
+       
+    //    open: true,
+    //    status_text: req.body.status_text || ""
+      };
+      
+        MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
+          var db = db.db("test");
+        //  var books;
+          var collection = db.collection("books");
+          collection.insertOne(book, function(err, doc) {
+           
+            res.json({
+              _id: book._id,
+              title: book.title,
+              
+            });
+            console.log("DB updated");
+          });
+        });
+      
     
       //response will contain new book object including atleast _id and title
     })

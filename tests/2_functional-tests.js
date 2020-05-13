@@ -136,16 +136,39 @@ suite("Functional Tests", function() {
 
       test("Test GET /api/books/[id] with valid id in db", function(done) {
         
-         chai.request(server)
-          .get('/api/books/'+idTest)
-          .end(function(err, res){
-            assert.equal(res.status, 200);
-            assert.equal(res.text, 'no book exists');
-            done();
-          });
+  //       chai.request(server)
+  //        .get('/api/books/'+idTest)
+  //        .end(function(err, res){
+  //          assert.equal(res.status, 200);
+  //          assert.equal(res.text, 'no book exists');
+   //         done();
+   //       });
+  //      
         
-        
-        
+       chai
+      .request(server)
+      .get("/api/books"+idTest)
+      .end(function(err, res) {
+        assert.equal(res.status, 200);
+        assert.isArray(res.body, "response should be an array");
+        assert.property(
+          res.body[0],
+          "commentcount",
+          "Books in array should contain commentcount"
+        );
+        assert.property(
+          res.body[0],
+          "title",
+          "Books in array should contain title"
+        );
+        assert.property(
+          res.body[0],
+          "_id",
+          "Books in array should contain _id"
+        );
+
+        done();
+      }); 
         
         
         //done();

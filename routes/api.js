@@ -24,19 +24,14 @@ module.exports = function (app) {
    MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {
         var db = db.db("test");
         var collection = db.collection("books");
-   //     collection.find(searchQuery).toArray(function(err, docs) {
-   //       res.json(docs);
-   //     });
+        collection.find(searchQuery).toArray(function(err, docs) {
+          
+          
+          res.json(docs);
+   console.log("docs", docs);
+        });
      
-       collection.find(searchQuery, (err, books) => {
-    if (err) return res.send(err);
-    let result = [];
-    books.forEach(book => {
-      result.push({ title: book.title, _id: book._id });
-    });
-    res.json(result);
-  });
-     
+
      
       });
   
